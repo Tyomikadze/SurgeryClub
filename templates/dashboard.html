@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Дашборд{% endblock %}
+{% block content %}
+<h2 class="text-2xl font-bold mb-6 sm:text-3xl">Календарь мероприятий</h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+    {% for event in events %}
+    <div class="bg-white p-4 rounded-lg shadow-md sm:p-6">
+        <h3 class="text-lg font-semibold sm:text-xl">{{ event.title }}</h3>
+        <p class="text-gray-600 text-sm sm:text-base">{{ event.date }}</p>
+        <p class="text-gray-600 text-sm sm:text-base">{{ event.description }}</p>
+        <div class="mt-4 flex flex-col sm:flex-row sm:space-x-2 space-y-2 sm:space-y-0">
+            {% if session.role == 'student' %}
+            <a href="{{ url_for('intend', event_id=event.id, intend=1) }}" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 button-press transition duration-300 text-sm sm:text-base">Планирую посетить</a>
+            <a href="{{ url_for('intend', event_id=event.id, intend=0) }}" class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 button-press transition duration-300 text-sm sm:text-base">Не планирую</a>
+            {% endif %}
+            {% if session.role == 'teacher' %}
+            <a href="{{ url_for('mark_presence', event_id=event.id) }}" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 button-press transition duration-300 text-sm sm:text-base">Отметить присутствие</a>
+            <a href="{{ url_for('add_content', event_id=event.id) }}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 button-press transition duration-300 text-sm sm:text-base">Добавить контент</a>
+            {% endif %}
+            <a href="{{ url_for('view_content', event_id=event.id) }}" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 button-press transition duration-300 text-sm sm:text-base">Просмотреть контент</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

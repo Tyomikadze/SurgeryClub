@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Подтверждение пользователей{% endblock %}
+{% block content %}
+<h2 class="text-2xl font-bold mb-6 sm:text-3xl">Ожидающие подтверждения</h2>
+<div class="space-y-4">
+    {% for user in pending %}
+    <div class="bg-white p-4 rounded-lg shadow-md flex flex-col sm:flex-row sm:justify-between sm:items-center sm:p-6">
+        <span class="text-lg sm:text-xl">{{ user.username }}</span>
+        <div class="mt-2 sm:mt-0 flex space-x-2">
+            <a href="{{ url_for('approve', user_id=user.id) }}" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 button-press transition duration-300 text-sm sm:text-base">Подтвердить</a>
+            <a href="{{ url_for('reject', user_id=user.id) }}" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 button-press transition duration-300 text-sm sm:text-base">Отклонить</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

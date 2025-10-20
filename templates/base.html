@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans min-h-screen">
+    <nav class="bg-blue-600 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a class="text-xl font-bold" href="{{ url_for('dashboard') }}">Платформа обучения</a>
+            <!-- Кнопка гамбургер-меню для мобильных -->
+            <button id="menu-toggle" class="sm:hidden focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+            <!-- Навигация для десктопов -->
+            <div class="hidden sm:flex space-x-4">
+                {% if session.role == 'teacher' %}
+                <a class="hover:bg-blue-700 px-3 py-2 rounded transition duration-300" href="{{ url_for('approve_users') }}">Подтвердить пользователей</a>
+                <a class="hover:bg-blue-700 px-3 py-2 rounded transition duration-300" href="{{ url_for('add_event') }}">Добавить мероприятие</a>
+                <a class="hover:bg-blue-700 px-3 py-2 rounded transition duration-300" href="{{ url_for('statistics') }}">Статистика</a>
+                {% endif %}
+                <a class="hover:bg-blue-700 px-3 py-2 rounded transition duration-300" href="{{ url_for('logout') }}">Выход</a>
+            </div>
+        </div>
+        <!-- Мобильное меню -->
+        <div id="mobile-menu" class="nav-menu hidden sm:hidden bg-blue-600 text-white absolute top-0 right-0 w-64 h-full shadow-lg flex flex-col space-y-4 p-4 z-50">
+            {% if session.role == 'teacher' %}
+            <a class="hover:bg-blue-700 px-3 py-2 rounded transition duration-300" href="{{ url_for('approve_users') }}">Подтвердить пользователей</a>
+            <a class="hover:bg-blue-700 px-3 py-2 rounded transition duration-300" href="{{ url_for('add_event') }}">Добавить мероприятие</a>
+            <a class="hover:bg-blue-700 px-3 py-2 rounded transition duration-300" href="{{ url_for('statistics') }}">Статистика</a>
+            {% endif %}
+            <a class="hover:bg-blue-700 px-3 py-2 rounded transition duration-300" href="{{ url_for('logout') }}">Выход</a>
+        </div>
+    </nav>
+    <div class="container mx-auto px-4 py-6 animate-fade-in">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 mb-4 rounded">
+            {{ messages[0] }}
+        </div>
+        {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </div>
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuToggle.addEventListener('click', () => {
+            if (mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.remove('hidden', 'closed');
+                mobileMenu.classList.add('open');
+            } else {
+                mobileMenu.classList.remove('open');
+                mobileMenu.classList.add('closed');
+                setTimeout(() => mobileMenu.classList.add('hidden'), 300);
+            }
+        });
+    </script>
+</body>
+</html>
