@@ -1,0 +1,43 @@
+/* Анимация нажатия кнопки */
+@keyframes button-press {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+}
+
+.button-press:active {
+    animation: button-press 0.1s ease-in-out;
+}
+
+/* Анимация появления страницы */
+@keyframes fade-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+    animation: fade-in 0.5s ease-out;
+}
+
+/* Анимация для гамбургер-меню */
+@keyframes slide-in {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+}
+
+@keyframes slide-out {
+    from { transform: translateX(0); }
+    to { transform: translateX(100%); }
+}
+
+.nav-menu {
+    transition: transform 0.3s ease-in-out;
+}
+
+.nav-menu.open {
+    animation: slide-in 0.3s forwards;
+}
+
+.nav-menu.closed {
+    animation: slide-out 0.3s forwards;
+}

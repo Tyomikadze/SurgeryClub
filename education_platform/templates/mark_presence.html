@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Отметка присутствия{% endblock %}
+{% block content %}
+<h2 class="text-2xl font-bold mb-6 sm:text-3xl">Отметка присутствия для события</h2>
+<div class="space-y-4">
+    {% for student in students %}
+    <div class="bg-white p-4 rounded-lg shadow-md flex flex-col sm:flex-row sm:justify-between sm:items-center sm:p-6">
+        <span class="text-lg sm:text-xl">{{ student.username }}</span>
+        {% set att = attendances[student.id] %}
+        {% if att and att.present %}
+        <div class="mt-2 sm:mt-0 flex items-center space-x-2">
+            <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-sm">Присутствовал</span>
+            <a href="{{ url_for('set_presence', event_id=event_id, user_id=student.id, present=0) }}" class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 button-press transition duration-300 text-sm sm:text-base">Снять отметку</a>
+        </div>
+        {% else %}
+        <a href="{{ url_for('set_presence', event_id=event_id, user_id=student.id, present=1) }}" class="mt-2 sm:mt-0 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 button-press transition duration-300 text-sm sm:text-base">Отметить присутствие</a>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
